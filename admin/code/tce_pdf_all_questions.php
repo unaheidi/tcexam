@@ -77,6 +77,9 @@ if ($l['a_meta_dir'] == 'rtl') {
 
 $isunicode = (strcasecmp($l['a_meta_charset'], 'UTF-8') == 0);
 //create new PDF document (document units are set by default to millimeters)
+//echo $isunicode;
+
+
 $pdf = new TCPDFEX(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, $isunicode);
 
 switch ($expmode) {
@@ -132,7 +135,7 @@ if (defined('K_DIGSIG_ENABLE') and K_DIGSIG_ENABLE) {
 }
 
 // calculate some sizes
-$cell_height_ratio = (K_CELL_HEIGHT_RATIO + 0.1);
+$cell_height_ratio = (K_CELL_HEIGHT_RATIO + 0.3);
 $page_width = $pdf->getPageWidth() - PDF_MARGIN_LEFT - PDF_MARGIN_RIGHT;
 $data_cell_height = round(($cell_height_ratio * PDF_FONT_SIZE_DATA) / $pdf->getScaleFactor(), 2);
 $main_cell_height = round(($cell_height_ratio * PDF_FONT_SIZE_MAIN) / $pdf->getScaleFactor(), 2);
@@ -173,7 +176,7 @@ if ($rm = F_db_query($sqlm, $db)) {
                 $pdf->setBarcode($subject_id);
 
                 $pdf->SetFillColor(204, 204, 204);
-                $pdf->SetLineWidth(0.1);
+                $pdf->SetLineWidth(0.0);
                 $pdf->SetDrawColor(0, 0, 0);
 
                 // print document name (title)
@@ -200,15 +203,15 @@ if ($rm = F_db_query($sqlm, $db)) {
                     $pdf->SetFont(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA);
                     $itemcount = 1;
                     while ($mq = F_db_fetch_array($rq)) {
+                        
                         $question_disabled = 0;
                         if (!F_getBoolean($mq['question_enabled'])) {
                             $question_disabled = 1;
                         }
+                        /*
                         $pdf->Cell($data_cell_width_third, $data_cell_height, $itemcount, 1, 0, 'R', $question_disabled);
-
                         $pdf->Cell($data_cell_width_third/2, $data_cell_height, $qtype[($mq['question_type']-1)], 1, 0, 'C', $question_disabled);
                         $pdf->Cell($data_cell_width_third/2, $data_cell_height, $mq['question_difficulty'], 1, 0, 'R', $question_disabled);
-
                         if ($mq['question_position'] <= 0) {
                             $mq['question_position'] = '';
                         }
@@ -235,9 +238,13 @@ if ($rm = F_db_query($sqlm, $db)) {
                             $mq['question_timer'] = '';
                         }
                         $pdf->Cell($data_cell_width_third, $data_cell_height, $mq['question_timer'], 1, 0, 'R', $question_disabled);
-
+                    
                         $pdf->Ln();
-                        $pdf->writeHTMLCell(0, $data_cell_height, (PDF_MARGIN_LEFT + $data_cell_width_third), $pdf->GetY(), F_decode_tcecode($mq['question_description']), 1, 1, '', '');
+                         */
+                        $pdf->Cell($data_cell_width_third, $data_cell_height, $itemcount, 0, 0, 'R', $question_disabled);
+                        $pdf->writeHTMLCell(0, $data_cell_height, (PDF_MARGIN_LEFT  + $data_cell_width_third), $pdf->GetY(), F_decode_tcecode($mq['question_description']), 0, 1, '', '');
+                        $pdf->Ln(2);
+                        
                         if (K_ENABLE_QUESTION_EXPLANATION and !empty($mq['question_explanation'])) {
                             $pdf->Cell($data_cell_width_third, $data_cell_height, '', 0, 0, 'C', 0);
                             $pdf->SetFont('', 'BIU');

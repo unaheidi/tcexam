@@ -393,6 +393,7 @@ function F_show_select_questions($wherequery, $subject_module_id, $subject_id, $
     } else {
         $sql .= ' LIMIT '.$rowsperpage.' OFFSET '.$firstrow.'';
     }
+    
     if ($r = F_db_query($sql, $db)) {
         $questlist = '';
         $itemcount = $firstrow;
@@ -461,7 +462,7 @@ function F_show_select_questions($wherequery, $subject_module_id, $subject_id, $
             $questlist .= '<br /><br />'.K_NEWLINE;
             $questlist .=  '<div class="paddingleft">'.F_decode_tcecode($m['question_description']).'</div>'.K_NEWLINE;
             if (K_ENABLE_QUESTION_EXPLANATION and !empty($m['question_explanation'])) {
-                $questlist .=  '<div class="paddingleft"><br /><span class="explanation">'.$l['w_explanation'].':</span><br />'.F_decode_tcecode($m['question_explanation']).'</div>'.K_NEWLINE;
+                $questlist .=  '<div class="paddingleft"><br />'.F_decode_tcecode($m['question_explanation']).'</div>'.K_NEWLINE;
             }
             if (!$hide_answers) {
                 // display alternative answers
@@ -518,6 +519,7 @@ function F_show_select_questions($wherequery, $subject_module_id, $subject_id, $
         if (strlen($questlist) > 0) {
             // display the list
             echo '<ul class="question">'.K_NEWLINE;
+            #echo '<pre>'.$questlist;
             echo $questlist;
             echo '</ul>'.K_NEWLINE;
             echo '<div class="row"><hr /></div>'.K_NEWLINE;

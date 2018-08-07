@@ -180,10 +180,10 @@ if ($rm = F_db_query($sqlm, $db)) {
                 $pdf->SetDrawColor(0, 0, 0);
 
                 // print document name (title)
-                $pdf->SetFont(PDF_FONT_NAME_DATA, 'B', PDF_FONT_SIZE_DATA * K_TITLE_MAGNIFICATION);
-                $pdf->Cell(0, $main_cell_height * K_TITLE_MAGNIFICATION, $doc_title, 1, 1, 'C', 1);
+                //$pdf->SetFont(PDF_FONT_NAME_DATA, 'B', PDF_FONT_SIZE_DATA * K_TITLE_MAGNIFICATION);
+                //$pdf->Cell(0, $main_cell_height * K_TITLE_MAGNIFICATION, $doc_title, 1, 1, 'C', 1);
 
-                $pdf->Ln(5);
+                //$pdf->Ln(5);
 
                 // --- display subject info ---
                 $pdf->SetFont(PDF_FONT_NAME_DATA, 'B', PDF_FONT_SIZE_DATA * HEAD_MAGNIFICATION);
@@ -247,8 +247,8 @@ if ($rm = F_db_query($sqlm, $db)) {
                         
                         if (K_ENABLE_QUESTION_EXPLANATION and !empty($mq['question_explanation'])) {
                             $pdf->Cell($data_cell_width_third, $data_cell_height, '', 0, 0, 'C', 0);
-                            $pdf->SetFont('', 'BIU');
-                            $pdf->Cell(0, $data_cell_height, $l['w_explanation'], 'LTR', 1, '', 0, '', 0);
+                            //$pdf->SetFont('', 'BIU');
+                            //$pdf->Cell(0, $data_cell_height, $l['w_explanation'], 'LTR', 1, '', 0, '', 0);
                             $pdf->SetFont('', '');
                             $pdf->writeHTMLCell(0, $data_cell_height, (PDF_MARGIN_LEFT + $data_cell_width_third), $pdf->GetY(), F_decode_tcecode($mq['question_explanation']), 'LRB', 1, '', '');
                         }
@@ -342,6 +342,9 @@ switch ($expmode) {
         break;
     }
 }
+
+// Clean any content of the output buffer
+ob_end_clean();
 
 // Send PDF output
 $pdf->Output($pdf_filename, 'D');
